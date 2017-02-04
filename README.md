@@ -16,7 +16,7 @@ header('Content-Disposition: attachment;filename=sites_export.xlsx');
 header('Cache-Control: max-age=0');
 
 // 默认跳过第一行表头
-// 更多使用请查看 \YExcel\Excel 注释
+// 更多使用请查看 src\Excel 注释
 Excel::put('php://output', $data, $template);
 ```
 
@@ -25,7 +25,7 @@ Excel::put('php://output', $data, $template);
 use YExcel\Excel;
 
 // 默认跳过第一行表头
-// 更多使用请查看 \YExcel\Excel 注释
+// 更多使用请查看 src\Excel 注释
 foreach (Excel::get('file.xlsx') as $row) {
     var_dump($row);
     // 写入数据库之类
