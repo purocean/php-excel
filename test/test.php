@@ -24,6 +24,8 @@ Excel::put('test2.xlsx', $generator($data), 'template.xlsx', 2);
 
 Excel::put('test3.xlsx', $data, null, 5);
 
+Excel::put('test3.xls', $data, null, 5, 'Excel5');
+
 $tmp = [];
 foreach (Excel::get('test3.xlsx', null, [1, 2], false) as $row) {
     $tmp[] = $row;
@@ -37,6 +39,13 @@ foreach (Excel::get('test3.xlsx', null, [1], true) as $row) {
 }
 
 echo expectTrue(count($tmp) === count($data), 'skip blank row 1');
+
+$tmp = [];
+foreach (Excel::get('test3.xls', null, [1], true, 'Excel5') as $row) {
+    $tmp[] = $row;
+}
+
+echo expectTrue(count($tmp) === count($data), 'skip blank row 1 (xls)');
 
 echo "\n";
 

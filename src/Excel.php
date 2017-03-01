@@ -18,13 +18,14 @@ class Excel
      * @param int|null $highestColumn 列数，为 null 时候自动检测
      * @param array    $skipRows      跳过的行，默认跳过第一行（表头）
      * @param bool     $skipBlankRow  是否跳过空白行，默认为 true
+     * @param string   $type          Excel 文件类型，如 Excel2007 或 Excel5
      *
      * @return generator 可遍历的生成器
      */
-    public static function get($file, $highestColumn = null, $skipRows = [1], $skipBlankRow = true)
+    public static function get($file, $highestColumn = null, $skipRows = [1], $skipBlankRow = true, $type = 'Excel2007')
     {
 
-        $objReader = IOFactory::createReader('Excel2007');
+        $objReader = IOFactory::createReader($type);
         $objPHPExcel = $objReader->load($file);
         $sheet = $objPHPExcel->getSheet(0);
         $highestRow = $sheet->getHighestRow();
@@ -58,12 +59,13 @@ class Excel
      * @param array|generator $data    数据，可以被 foreach 遍历的数据，数组或者生成器
      * @param string          $tplFile 模板文件，以哪个模板填写数据，如果不提供则生成空白 xlsx 文件
      * @param int             $skipRow 跳过表头的行数，默认为 1
+     * @param string          $type    Excel 文件类型，如 Excel2007 或 Excel5
      */
-    public static function put($file, $data, $tplFile = null, $skipRow = 1)
+    public static function put($file, $data, $tplFile = null, $skipRow = 1, $type = 'Excel2007')
     {
         if ($tplFile) {
             if (file_exists($tplFile)) {
-                $objReader = IOFactory::createReader('Excel2007');
+                $objReader = IOFactory::createReader($type);
                 $objPHPExcel = $objReader->load($tplFile);
             } else {
                 throw new \Exception("File `{$tplFile}` not exists");
@@ -90,6 +92,6 @@ class Excel
             ++$rowNum;
         }
 
-        IOFactory::createWriter($objPHPExcel, 'Excel2007')->save($file);
+        IOFactory::createWriter($objPHPExcel, $type)->save($file);
     }
 }
