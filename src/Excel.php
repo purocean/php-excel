@@ -39,7 +39,7 @@ class Excel
             $rowData = [];
             for ($col = 0; $col < $highestColumn; $col++) {
                 $value = $objPHPExcel->getActiveSheet()->getCellByColumnAndRow($col, $row)->getValue();
-                $rowData[] = is_null($value) ? '' : $value;
+                $rowData[] = is_null($value) ? '' : (string) $value;
             }
 
             if ($skipBlankRow) {
