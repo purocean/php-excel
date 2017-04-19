@@ -7,7 +7,75 @@
 ```php
 use YExcel\Excel;
 
-$data = [...]; // 从数据库之类得到数据，数组或生成器，使用生成器方式可以节省内存使用
+// 从数据库之类得到数据，数组或可遍历的生成器，支持使用闭包灵活配置每一个单元格
+$data = [
+    ["a1", "a2", "a3", "a4", "a5", "a6", "a7", "a8", "a9", "a10"],
+    ["b1", "b2", "b3", "b4", "b5", "b6", "b7", "b8", "b9", "b10"],
+    ["c1", "c2", "c3", "c4", "c5", "c6", "c7", "c8", "c9", "c10"],
+    [
+        function ($sheet, $colNum, $rowNum) {
+            $sheet->setCellValueByColumnAndRow($colNum, $rowNum, "d1");
+            $fill = $sheet->getStyleByColumnAndRow($colNum, $rowNum)->getFill();
+            $fill->setFillType('solid');
+            $fill->getStartColor()->setARGB('FFFFEB18');
+        },
+        function ($sheet, $colNum, $rowNum) {
+            $sheet->setCellValueByColumnAndRow($colNum, $rowNum, "d2");
+            $fill = $sheet->getStyleByColumnAndRow($colNum, $rowNum)->getFill();
+            $fill->setFillType('solid');
+            $fill->getStartColor()->setARGB('FFFFEB18');
+        },
+        function ($sheet, $colNum, $rowNum) {
+            $sheet->setCellValueByColumnAndRow($colNum, $rowNum, "d3");
+            $fill = $sheet->getStyleByColumnAndRow($colNum, $rowNum)->getFill();
+            $fill->setFillType('solid');
+            $fill->getStartColor()->setARGB('FFFFEB18');
+        },
+        function ($sheet, $colNum, $rowNum) {
+            $sheet->setCellValueByColumnAndRow($colNum, $rowNum, "d4");
+            $fill = $sheet->getStyleByColumnAndRow($colNum, $rowNum)->getFill();
+            $fill->setFillType('solid');
+            $fill->getStartColor()->setARGB('FFFFEB18');
+        },
+        function ($sheet, $colNum, $rowNum) {
+            $sheet->setCellValueByColumnAndRow($colNum, $rowNum, "d5");
+            $fill = $sheet->getStyleByColumnAndRow($colNum, $rowNum)->getFill();
+            $fill->setFillType('solid');
+            $fill->getStartColor()->setARGB('FFFFEB18');
+        },
+        function ($sheet, $colNum, $rowNum) {
+            $sheet->setCellValueByColumnAndRow($colNum, $rowNum, "d6");
+            $fill = $sheet->getStyleByColumnAndRow($colNum, $rowNum)->getFill();
+            $fill->setFillType('solid');
+            $fill->getStartColor()->setARGB('FFFFEB18');
+        },
+        function ($sheet, $colNum, $rowNum) {
+            $sheet->setCellValueByColumnAndRow($colNum, $rowNum, "d7");
+            $fill = $sheet->getStyleByColumnAndRow($colNum, $rowNum)->getFill();
+            $fill->setFillType('solid');
+            $fill->getStartColor()->setARGB('FFFFEB18');
+        },
+        function ($sheet, $colNum, $rowNum) {
+            $sheet->setCellValueByColumnAndRow($colNum, $rowNum, "d8");
+            $fill = $sheet->getStyleByColumnAndRow($colNum, $rowNum)->getFill();
+            $fill->setFillType('solid');
+            $fill->getStartColor()->setARGB('FFFFEB18');
+        },
+        function ($sheet, $colNum, $rowNum) {
+            $sheet->setCellValueByColumnAndRow($colNum, $rowNum, "d9");
+            $fill = $sheet->getStyleByColumnAndRow($colNum, $rowNum)->getFill();
+            $fill->setFillType('solid');
+            $fill->getStartColor()->setARGB('FFFFEB18');
+        },
+        function ($sheet, $colNum, $rowNum) {
+            $sheet->setCellValueByColumnAndRow($colNum, $rowNum, "d10");
+            $fill = $sheet->getStyleByColumnAndRow($colNum, $rowNum)->getFill();
+            $fill->setFillType('solid');
+            $fill->getStartColor()->setARGB('FFFFEB18');
+        }
+    ],
+];
+
 $template = 'template.xlsx'; // 模板文件，如果不提供则新建一个 xlsx 文件
 
 // 给浏览器发送下载头
