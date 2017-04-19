@@ -8,7 +8,68 @@ $data = [
     ["a1", "a2", "a3", "a4", "a5", "a6", "a7", "a8", "a9", "a10"],
     ["b1", "b2", "b3", "b4", "b5", "b6", "b7", "b8", "b9", "b10"],
     ["c1", "c2", "c3", "c4", "c5", "c6", "c7", "c8", "c9", "c10"],
-    ["d1", "d2", "d3", "d4", "d5", "d6", "d7", "d8", "d9", "d10"],
+    [
+        function ($sheet, $colNum, $rowNum) {
+            $sheet->setCellValueByColumnAndRow($colNum, $rowNum, "d1");
+            $fill = $sheet->getStyleByColumnAndRow($colNum, $rowNum)->getFill();
+            $fill->setFillType('solid');
+            $fill->getStartColor()->setARGB('FFFFEB18');
+        },
+        function ($sheet, $colNum, $rowNum) {
+            $sheet->setCellValueByColumnAndRow($colNum, $rowNum, "d2");
+            $fill = $sheet->getStyleByColumnAndRow($colNum, $rowNum)->getFill();
+            $fill->setFillType('solid');
+            $fill->getStartColor()->setARGB('FFFFEB18');
+        },
+        function ($sheet, $colNum, $rowNum) {
+            $sheet->setCellValueByColumnAndRow($colNum, $rowNum, "d3");
+            $fill = $sheet->getStyleByColumnAndRow($colNum, $rowNum)->getFill();
+            $fill->setFillType('solid');
+            $fill->getStartColor()->setARGB('FFFFEB18');
+        },
+        function ($sheet, $colNum, $rowNum) {
+            $sheet->setCellValueByColumnAndRow($colNum, $rowNum, "d4");
+            $fill = $sheet->getStyleByColumnAndRow($colNum, $rowNum)->getFill();
+            $fill->setFillType('solid');
+            $fill->getStartColor()->setARGB('FFFFEB18');
+        },
+        function ($sheet, $colNum, $rowNum) {
+            $sheet->setCellValueByColumnAndRow($colNum, $rowNum, "d5");
+            $fill = $sheet->getStyleByColumnAndRow($colNum, $rowNum)->getFill();
+            $fill->setFillType('solid');
+            $fill->getStartColor()->setARGB('FFFFEB18');
+        },
+        function ($sheet, $colNum, $rowNum) {
+            $sheet->setCellValueByColumnAndRow($colNum, $rowNum, "d6");
+            $fill = $sheet->getStyleByColumnAndRow($colNum, $rowNum)->getFill();
+            $fill->setFillType('solid');
+            $fill->getStartColor()->setARGB('FFFFEB18');
+        },
+        function ($sheet, $colNum, $rowNum) {
+            $sheet->setCellValueByColumnAndRow($colNum, $rowNum, "d7");
+            $fill = $sheet->getStyleByColumnAndRow($colNum, $rowNum)->getFill();
+            $fill->setFillType('solid');
+            $fill->getStartColor()->setARGB('FFFFEB18');
+        },
+        function ($sheet, $colNum, $rowNum) {
+            $sheet->setCellValueByColumnAndRow($colNum, $rowNum, "d8");
+            $fill = $sheet->getStyleByColumnAndRow($colNum, $rowNum)->getFill();
+            $fill->setFillType('solid');
+            $fill->getStartColor()->setARGB('FFFFEB18');
+        },
+        function ($sheet, $colNum, $rowNum) {
+            $sheet->setCellValueByColumnAndRow($colNum, $rowNum, "d9");
+            $fill = $sheet->getStyleByColumnAndRow($colNum, $rowNum)->getFill();
+            $fill->setFillType('solid');
+            $fill->getStartColor()->setARGB('FFFFEB18');
+        },
+        function ($sheet, $colNum, $rowNum) {
+            $sheet->setCellValueByColumnAndRow($colNum, $rowNum, "d10");
+            $fill = $sheet->getStyleByColumnAndRow($colNum, $rowNum)->getFill();
+            $fill->setFillType('solid');
+            $fill->getStartColor()->setARGB('FFFFEB18');
+        }
+    ],
 ];
 
 $generator = function ($data) {

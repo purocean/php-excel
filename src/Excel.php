@@ -5,6 +5,7 @@ namespace YExcel;
 use \PHPExcel_IOFactory as IOFactory;
 use \PHPExcel_Cell as Cell;
 use \PHPExcel as PHPExcel;
+use Closure;
 
 /**
 * 导入导出
@@ -82,11 +83,15 @@ class Excel
         foreach ($data as $row) {
             $colNum = 0;
             foreach ($row as $val) {
-                $objSheet->setCellValueByColumnAndRow(
-                    $colNum,
-                    $rowNum + $skipRow,
-                    $val
-                );
+                if ($val instanceof Closure) {
+                    $val($objSheet, $colNum, $rowNum + $skipRow);
+                } else {
+                    $objSheet->setCellValueByColumnAndRow(
+                        $colNum,
+                        $rowNum + $skipRow,
+                        $val
+                    );
+                }
                 ++$colNum;
             }
             ++$rowNum;
