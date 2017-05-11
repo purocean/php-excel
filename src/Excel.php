@@ -20,15 +20,16 @@ class Excel
      * @param array    $skipRows      跳过的行，默认跳过第一行（表头）
      * @param bool     $skipBlankRow  是否跳过空白行，默认为 true
      * @param string   $type          Excel 文件类型，如 Excel2007 或 Excel5
+     * @param int      $sheetNum      Sheet index
      *
      * @return generator 可遍历的生成器
      */
-    public static function get($file, $highestColumn = null, $skipRows = [1], $skipBlankRow = true, $type = 'Excel2007')
+    public static function get($file, $highestColumn = null, $skipRows = [1], $skipBlankRow = true, $type = 'Excel2007', $sheetNum = 0)
     {
 
         $objReader = IOFactory::createReader($type);
         $objPHPExcel = $objReader->load($file);
-        $sheet = $objPHPExcel->getSheet(0);
+        $sheet = $objPHPExcel->getSheet($sheetNum);
         $highestRow = $sheet->getHighestRow();
         is_null($highestColumn) and $highestColumn = Cell::columnIndexFromString($sheet->getHighestColumn());
 
@@ -56,13 +57,14 @@ class Excel
     /**
      * 把数据写入一个文件
      *
-     * @param string          $file    文件名
-     * @param array|generator $data    数据，可以被 foreach 遍历的数据，数组或者生成器
-     * @param string          $tplFile 模板文件，以哪个模板填写数据，如果不提供则生成空白 xlsx 文件
-     * @param int             $skipRow 跳过表头的行数，默认为 1
-     * @param string          $type    Excel 文件类型，如 Excel2007 或 Excel5
+     * @param string          $file          文件名
+     * @param array|generator $data          数据，可以被 foreach 遍历的数据，数组或者生成器，如果多 sheet ，传入二维数组
+     * @param string          $tplFile       模板文件，以哪个模板填写数据，如果不提供则生成空白 xlsx 文件
+     * @param int             $skipRow       跳过表头的行数，默认为 1
+     * @param string          $type          Excel 文件类型，如 Excel2007 或 Excel5
+     * @param array|boolean   $multiSheet    是否要写入多 sheet，可以传入数组定义 sheet 名称，[0 => 'sheet1', 1 => 'sheet2']
      */
-    public static function put($file, $data, $tplFile = null, $skipRow = 1, $type = 'Excel2007')
+    public static function put($file, $data, $tplFile = null, $skipRow = 1, $type = 'Excel2007', $multiSheet = false)
     {
         if ($tplFile) {
             if (file_exists($tplFile)) {
@@ -75,27 +77,42 @@ class Excel
             $objPHPExcel = new PHPExcel();
         }
 
-        $objPHPExcel->setActiveSheetIndex(0);
-        $objSheet=$objPHPExcel->getActiveSheet();
-        $objSheet->setTitle('export');
-
-        $rowNum = 1;
-        foreach ($data as $row) {
-            $colNum = 0;
-            foreach ($row as $val) {
-                if ($val instanceof Closure) {
-                    $val($objSheet, $colNum, $rowNum + $skipRow);
-                } else {
-                    $objSheet->setCellValueByColumnAndRow(
-                        $colNum,
-                        $rowNum + $skipRow,
-                        $val
-                    );
-                }
-                ++$colNum;
+        $write = function ($data) use ($objPHPExcel, $multiSheet, $skipRow) {
+            if (! is_array($multiSheet)) {
+                $multiSheet = [];
             }
-            ++$rowNum;
-        }
+
+            foreach ($data as $sheetNum => $sheetData) {
+                if ($sheetNum > $objPHPExcel->getSheetCount() - 1) {
+                    $objPHPExcel->createSheet($sheetNum);
+                }
+
+                $objPHPExcel->setActiveSheetIndex($sheetNum);
+                $objSheet = $objPHPExcel->getActiveSheet();
+                $objSheet->setTitle(isset($multiSheet[$sheetNum]) ? $multiSheet[$sheetNum] : 'sheet' . ($sheetNum + 1));
+
+                $rowNum = 1;
+                foreach ($sheetData as $row) {
+                    $colNum = 0;
+                    foreach ($row as $val) {
+                        if ($val instanceof Closure) {
+                            $val($objSheet, $colNum, $rowNum + $skipRow);
+                        } else {
+                            $objSheet->setCellValueByColumnAndRow(
+                                $colNum,
+                                $rowNum + $skipRow,
+                                $val
+                            );
+                        }
+                        ++$colNum;
+                    }
+                    ++$rowNum;
+                }
+            }
+        };
+
+        $write($multiSheet === false ? [$data] : $data);
+        $objPHPExcel->setActiveSheetIndex(0);
 
         IOFactory::createWriter($objPHPExcel, $type)->save($file);
     }

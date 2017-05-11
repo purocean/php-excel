@@ -72,6 +72,10 @@ $data = [
     ],
 ];
 
+$data2 = [
+    1 => $data
+];
+
 $generator = function ($data) {
     foreach ($data as $row) {
         yield $row;
@@ -86,6 +90,10 @@ Excel::put('test2.xlsx', $generator($data), 'template.xlsx', 2);
 Excel::put('test3.xlsx', $data, null, 5);
 
 Excel::put('test3.xls', $data, null, 5, 'Excel5');
+
+Excel::put('test4.xls', $data2, null, 5, 'Excel5', true);
+
+Excel::put('test5.xls', $data2, null, 5, 'Excel5', [1 => 'test11']);
 
 $tmp = [];
 foreach (Excel::get('test3.xlsx', null, [1, 2], false) as $row) {
@@ -107,6 +115,24 @@ foreach (Excel::get('test3.xls', null, [1], true, 'Excel5') as $row) {
 }
 
 echo expectTrue(count($tmp) === count($data), 'skip blank row 1 (xls)');
+
+echo "\n";
+
+$tmp = [];
+foreach (Excel::get('test4.xls', null, [1], true, 'Excel5', 1) as $row) {
+    $tmp[] = $row;
+}
+
+echo expectTrue(count($tmp) === count($data), 'skip blank row 1 (xls) | sheet index 1');
+
+echo "\n";
+
+$tmp = [];
+foreach (Excel::get('test5.xls', null, [1], true, 'Excel5', 0) as $row) {
+    $tmp[] = $row;
+}
+
+echo expectTrue(count($tmp) === 0, 'skip blank row 1 (xls) | sheet index 0');
 
 echo "\n";
 
