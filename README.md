@@ -85,10 +85,10 @@ header('Cache-Control: max-age=0');
 
 // 默认跳过第一行表头
 // 更多使用请查看 src\Excel 注释
-Excel::put('php://output', $data, $template);
+Excel::put('php://output', $data, ['tplFile' => $template]);
 
 // 多个 sheet 导出
-Excel::put('php://output', [1 => $data], null, 1, 'Excel2007', [1 => 'test11']);
+Excel::put('php://output', [1 => $data], [multiSheet => [1 => 'test11']]);
 ```
 
 ### 导入

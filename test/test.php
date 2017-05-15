@@ -83,34 +83,34 @@ $generator = function ($data) {
 };
 
 
-Excel::put('test1.xlsx', $data, null, 0);
+Excel::put('test1.xlsx', $data, ['skipRow' => 0]);
 
-Excel::put('test2.xlsx', $generator($data), 'template.xlsx', 2);
+Excel::put('test2.xlsx', $generator($data), ['tplFile' => 'template.xlsx', 'skipRow' => 2]);
 
-Excel::put('test3.xlsx', $data, null, 5);
+Excel::put('test3.xlsx', $data, ['skipRow' => 5]);
 
-Excel::put('test3.xls', $data, null, 5, 'Excel5');
+Excel::put('test3.xls', $data, ['skipRow' => 5, 'type' => 'Excel5']);
 
-Excel::put('test4.xls', $data2, null, 5, 'Excel5', true);
+Excel::put('test4.xls', $data2, ['skipRow' => 5, 'type' => 'Excel5', 'multiSheet' => true]);
 
-Excel::put('test5.xls', $data2, null, 5, 'Excel5', [1 => 'test11']);
+Excel::put('test5.xls', $data2, ['skipRow' => 5, 'type' => 'Excel5', 'multiSheet' => [1 => 'test11']]);
 
 $tmp = [];
-foreach (Excel::get('test3.xlsx', null, [1, 2], false) as $row) {
+foreach (Excel::get('test3.xlsx', ['skipRows' => [1, 2], 'skipBlankRow' => false]) as $row) {
     $tmp[] = $row;
 }
 
 echo expectTrue(count($tmp) === count($data) + 3, 'skip blank row 0');
 
 $tmp = [];
-foreach (Excel::get('test3.xlsx', null, [1], true) as $row) {
+foreach (Excel::get('test3.xlsx') as $row) {
     $tmp[] = $row;
 }
 
 echo expectTrue(count($tmp) === count($data), 'skip blank row 1');
 
 $tmp = [];
-foreach (Excel::get('test3.xls', null, [1], true, 'Excel5') as $row) {
+foreach (Excel::get('test3.xls', ['type' => 'Excel5']) as $row) {
     $tmp[] = $row;
 }
 
@@ -119,7 +119,7 @@ echo expectTrue(count($tmp) === count($data), 'skip blank row 1 (xls)');
 echo "\n";
 
 $tmp = [];
-foreach (Excel::get('test4.xls', null, [1], true, 'Excel5', 1) as $row) {
+foreach (Excel::get('test4.xls', ['type' => 'Excel5', 'sheetNum' => 1]) as $row) {
     $tmp[] = $row;
 }
 
@@ -128,7 +128,7 @@ echo expectTrue(count($tmp) === count($data), 'skip blank row 1 (xls) | sheet in
 echo "\n";
 
 $tmp = [];
-foreach (Excel::get('test5.xls', null, [1], true, 'Excel5', 0) as $row) {
+foreach (Excel::get('test5.xls', ['type' => 'Excel5', 'sheetNum' => 0]) as $row) {
     $tmp[] = $row;
 }
 
@@ -136,7 +136,7 @@ echo expectTrue(count($tmp) === 0, 'skip blank row 1 (xls) | sheet index 0');
 
 echo "\n";
 
-foreach (Excel::get('test2.xlsx', null, []) as $row) {
+foreach (Excel::get('test2.xlsx', ['skipRows' => []]) as $row) {
     echo "\n".implode("\t", $row);
 }
 
