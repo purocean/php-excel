@@ -85,7 +85,7 @@ $generator = function ($data) {
 
 Excel::put('test1.xlsx', $data, ['skipRow' => 0]);
 
-Excel::put('test2.xlsx', $generator($data), ['tplFile' => 'template.xlsx', 'skipRow' => 2]);
+Excel::put('test2.xlsx', $generator($data), ['tplFile' => './data/template.xlsx', 'skipRow' => 2]);
 
 Excel::put('test3.xlsx', $data, ['skipRow' => 5]);
 
@@ -139,6 +139,20 @@ echo "\n";
 foreach (Excel::get('test2.xlsx', ['skipRows' => []]) as $row) {
     echo "\n".implode("\t", $row);
 }
+
+echo "\n";
+
+foreach (Excel::get('./data/excel_time_format.xls', ['type' => 'Excel5', 'skipRows' => []]) as $row) {
+    echo Excel::formatExcelTime($row[0], 'Y-m-d') . "\t";
+    echo Excel::formatExcelTime($row[1], 'Y-m-d H:i:s') . "\t";
+    echo Excel::formatExcelTime($row[2]) . "\t";
+
+    echo "\n";
+
+    echo expectTrue(Excel::formatExcelTime($row[2]) === 1501632000, 'excel time format test');
+}
+
+echo "\n";
 
 function expectTrue($flag, $name)
 {

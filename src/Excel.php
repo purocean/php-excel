@@ -135,4 +135,21 @@ class Excel
 
         IOFactory::createWriter($objPHPExcel, $options['type'])->save($file);
     }
+
+    /**
+     * excel特有时间格式转换
+     *
+     * @param $time excel特有的时间 例如：43100
+     * @param string $format 返回格式 * 可选项 默认直接返回时间戳, 可设定date()方法的format类型
+     *
+     * @return false|long|string
+     */
+    public static function formatExcelTime($time, $format = '')
+    {
+        $time = \PHPExcel_Shared_Date::ExcelToPHP($time);
+        if ($format) {
+            $time = date($format, $time);
+        }
+        return $time;
+    }
 }
