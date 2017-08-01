@@ -142,7 +142,7 @@ class Excel
      * @param $time excel特有的时间 例如：43100
      * @param string $format 返回格式 * 可选项 默认直接返回时间戳, 可设定date()方法的format类型
      *
-     * @return false|\long|string
+     * @return false|long|string
      */
     public static function formatExcelTime($time, $format = '')
     {
