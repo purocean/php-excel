@@ -151,6 +151,23 @@ foreach (Excel::get('./data/excel_time_format.xls', ['type' => 'Excel5', 'skipRo
 
     echo expectTrue(Excel::formatExcelTime($row[2]) === 1501632000, 'excel time format test');
 }
+//过滤数据前后空格检测
+echo "\n";
+
+foreach (Excel::get('./data/excel_data_trim.xls', ['type' => 'Excel5', 'skipRows' => []]) as $row) {
+
+    echo "'" . $row[0] . "'" . "\t";
+    echo expectTrue($row[0] === '17A10SCCD0104661', 'data space trim test index 0');
+    echo "\n";
+
+    echo "'" . $row[1] . "'" . "\t";
+    echo expectTrue($row[1] === '510184500000000428', 'data space trim test index 1');
+    echo "\n";
+
+    echo "'" . $row[2] . "'" . "\t";
+    echo expectTrue($row[2] === '中文检测', 'data space trim test index 2');
+    echo "\n";
+}
 
 echo "\n";
 

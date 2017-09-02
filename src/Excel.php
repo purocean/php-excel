@@ -51,7 +51,7 @@ class Excel
             $rowData = [];
             for ($col = 0; $col < $options['highestColumn']; $col++) {
                 $value = $objPHPExcel->getActiveSheet()->getCellByColumnAndRow($col, $row)->getValue();
-                $rowData[] = is_null($value) ? '' : (string) $value;
+                $rowData[] = is_null($value) ? '' : trim((string)$value);
             }
 
             if ($options['skipBlankRow']) {
