@@ -151,6 +151,7 @@ foreach (Excel::get('./data/excel_time_format.xls', ['type' => 'Excel5', 'skipRo
 
     echo expectTrue(Excel::formatExcelTime($row[2]) === 1501632000, 'excel time format test');
 }
+
 //过滤数据前后空格检测
 echo "\n";
 
