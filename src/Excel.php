@@ -158,7 +158,7 @@ class Excel
      * @param int    $sheetNum sheet 编号
      * @return void
      */
-    public static function getSheet($file, $type, $sheetNum)
+    public static function getSheet($file, $type = 'Excel2007', $sheetNum = 0)
     {
         $objReader = IOFactory::createReader($type);
         $objPHPExcel = $objReader->load($file);
