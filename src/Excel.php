@@ -28,7 +28,6 @@ class Excel
      */
     public static function get($file, $options = [])
     {
-
         $options = array_merge([
             'highestColumn' => null,
             'skipRows'      => [1],
@@ -37,9 +36,7 @@ class Excel
             'sheetNum'      => 0,
         ], $options);
 
-        $objReader = IOFactory::createReader($options['type']);
-        $objPHPExcel = $objReader->load($file);
-        $sheet = $objPHPExcel->getSheet($options['sheetNum']);
+        $sheet = self::getSheet($file, $options['type'], $options['sheetNum']);
         $highestRow = $sheet->getHighestRow();
         is_null($options['highestColumn']) and $options['highestColumn'] = Cell::columnIndexFromString($sheet->getHighestColumn());
 
@@ -50,7 +47,7 @@ class Excel
 
             $rowData = [];
             for ($col = 0; $col < $options['highestColumn']; $col++) {
-                $value = $objPHPExcel->getActiveSheet()->getCellByColumnAndRow($col, $row)->getValue();
+                $value = $sheet->getCellByColumnAndRow($col, $row)->getValue();
                 $rowData[] = is_null($value) ? '' : trim((string)$value);
             }
 
@@ -151,5 +148,21 @@ class Excel
             $time = date($format, $time);
         }
         return $time;
+    }
+
+    /**
+     * 获取一个 Sheet 对象
+     *
+     * @param string $file     文件名
+     * @param string $type     文件类型，如 Excel2007 或 Excel5
+     * @param int    $sheetNum sheet 编号
+     * @return void
+     */
+    public static function getSheet($file, $type = 'Excel2007', $sheetNum = 0)
+    {
+        $objReader = IOFactory::createReader($type);
+        $objPHPExcel = $objReader->load($file);
+
+        return $objPHPExcel->getSheet($sheetNum);
     }
 }
