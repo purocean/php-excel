@@ -48,6 +48,9 @@ class Excel
             $rowData = [];
             for ($col = 0; $col < $options['highestColumn']; $col++) {
                 $value = $sheet->getCellByColumnAndRow($col, $row)->getValue();
+                if (substr($value, 0, 1) == '=') {
+                    $value = $sheet->getCellByColumnAndRow($col, $row)->getCalculatedValue();
+                }
                 $rowData[] = is_null($value) ? '' : trim((string)$value);
             }
 
