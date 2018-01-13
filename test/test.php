@@ -172,6 +172,27 @@ foreach (Excel::get('./data/excel_data_trim.xls', ['type' => 'Excel5', 'skipRows
 
 echo "\n";
 
+//带公式的excel单元格数据读取
+echo "\n";
+$data = [];
+foreach (Excel::get('./data/excel_formula.xls', ['type' => 'Excel5', 'skipRows' => []]) as $row) {
+    $data[] = $row[3];
+    echo $row[3] . "\n";
+}
+echo expectTrue($data[0] === '32', 'sum formula read success');
+echo "\n";
+echo expectTrue($data[1] === 'ab', '& formula read success');
+echo "\n";
+echo expectTrue($data[2] === '90', 'subtraction formula read success');
+echo "\n";
+echo expectTrue($data[3] === '2', 'division formula read success');
+echo "\n";
+echo expectTrue($data[4] === '一样', 'if equal formula read success');
+echo "\n";
+echo expectTrue($data[5] === '不一样', 'if not equal formula read success');
+
+echo "\n";
+
 function expectTrue($flag, $name)
 {
     return "\n".($flag ? '√' : '×').' '.$name;
